@@ -1,67 +1,193 @@
-# Retail Data Pipeline Automation | PySpark, Databricks, Azure Data Lake, Delta Lake
+# 🛒 Retail Data Pipeline Automation  
+**Tech Stack:** PySpark | Databricks | Azure Data Lake | Delta Lake | Power BI  
 
-Objective:
-To design and develop a scalable end-to-end data engineering pipeline that automates ingestion, transformation, and aggregation of retail transaction data from multiple sources, enabling real-time insights for business intelligence reporting.
+---
 
-End-to-End Workflow:
+## 📌 Project Overview
+This project implements a **scalable end-to-end retail data engineering pipeline** using **Medallion Architecture (Bronze–Silver–Gold)**.  
+The pipeline automates data ingestion, transformation, and aggregation of large-scale retail transaction data from multiple sources, enabling **analytics-ready datasets** and **real-time business intelligence reporting**.
 
-Data Ingestion (Bronze Layer):
+The solution is designed to handle **high data volume**, ensure **data quality**, and deliver **low-latency insights** for business stakeholders.
 
-Mounted Azure Blob Storage to Databricks using dbutils.fs.mount to extract raw data from multiple folders (transactions, products, stores, and customers).
+---
 
-Read and stored raw datasets in Parquet format into the Bronze layer for initial processing.
+## 🎯 Objective
+- Automate ingestion of retail data from multiple source systems  
+- Clean, enrich, and validate raw datasets using PySpark  
+- Build analytics-ready aggregated datasets for BI consumption  
+- Enable reliable, scalable, and performant reporting using Delta Lake  
 
-Data Transformation (Silver Layer):
+---
 
-Used PySpark DataFrame APIs to perform data type conversions, null handling, and deduplication.
+## 🏗 Architecture Overview (Medallion Design)
 
-Joined customer, product, and transaction datasets to create a unified Silver dataset containing enriched, validated records.
+```
+Source Data (Transactions, Products, Stores, Customers)
+            ↓
+Bronze Layer (Raw Data - ADLS, Parquet)
+            ↓
+Silver Layer (Cleaned & Enriched - Delta)
+            ↓
+Gold Layer (Aggregated Business KPIs - Delta)
+            ↓
+Power BI / Analytics Consumption
+```
 
-Implemented column-level transformations and added calculated fields such as total_amount = quantity * price to derive sales insights.
+---
 
-Data Aggregation (Gold Layer):
+## 🧰 Technology Stack
+- **Languages:** PySpark, Python, SQL  
+- **Platform:** Databricks  
+- **Storage:** Azure Data Lake Storage (ADLS)  
+- **Data Format:** Parquet, Delta Lake  
+- **Architecture:** Bronze–Silver–Gold (Medallion)  
+- **Analytics & BI:** Power BI  
+- **Optimization:** Partitioning, Delta Lake, Query Tuning  
 
-Designed the Gold Layer to summarize data for reporting — grouped by product, store, and date.
+---
 
-Calculated KPIs such as total quantity sold, total sales amount, average transaction value, and number of transactions.
+## 🔄 End-to-End Pipeline Workflow
 
-Stored aggregated results in Delta Tables, enabling ACID compliance and faster BI queries.
+### 🟫 Bronze Layer – Data Ingestion (Raw)
+**Purpose:** Preserve source data in its original form for traceability and reprocessing.
 
-Data Storage & Accessibility:
+- Mounted Azure Blob Storage to Databricks using `dbutils.fs.mount`  
+- Ingested raw retail datasets from multiple folders:
+  - Transactions  
+  - Products  
+  - Stores  
+  - Customers  
+- Stored raw data in **Parquet format** in the Bronze layer  
+- No transformations applied to ensure immutability  
 
-Stored all Bronze, Silver, and Gold data layers in Azure Data Lake Storage (ADLS) using Delta format for versioning and reliability.
+✅ Outcome: Reliable raw data storage for audit and replay scenarios.
 
-Created SQL tables in Databricks for BI consumption and ad-hoc analytics.
+---
 
-Data Visualization:
+### 🥈 Silver Layer – Data Transformation & Enrichment
+**Purpose:** Create clean, validated, and enriched datasets.
 
-Integrated Gold-layer tables with Power BI, enabling automated dashboard refresh and real-time retail performance monitoring.
+- Applied PySpark DataFrame transformations:
+  - Data type normalization  
+  - Null handling  
+  - Duplicate removal  
+- Joined customer, product, store, and transaction datasets  
+- Added derived business columns:
+  - `total_amount = quantity * price`  
+- Enforced schema consistency and validation rules  
 
-Skills & Tools Used:
+✅ Outcome: Trusted, analytics-ready intermediate datasets with improved data quality.
 
-Languages & Frameworks: PySpark, Python, SQL
+---
 
-Platforms: Databricks, Azure Data Lake Storage (ADLS)
+### 🥇 Gold Layer – Business Aggregation
+**Purpose:** Deliver BI-ready, performance-optimized datasets.
 
-Data Modeling: Bronze–Silver–Gold architecture, Delta Lake, Parquet
+- Aggregated data by:
+  - Product  
+  - Store  
+  - Date  
+- Computed key business KPIs:
+  - Total quantity sold  
+  - Total sales amount  
+  - Average transaction value  
+  - Number of transactions  
+- Stored results as **Delta Tables** to ensure:
+  - ACID compliance  
+  - Time travel  
+  - Faster analytical queries  
 
-ETL & Pipeline Development: Spark DataFrames, Data Cleaning, Aggregation, and Transformation
+✅ Outcome: Optimized datasets for dashboards and executive reporting.
 
-Analytics & BI: Power BI, Azure Synapse Analytics
+---
 
-Optimization: Schema design, partitioning, query tuning, incremental loading
+## 📊 Data Storage & Accessibility
+- All Bronze, Silver, and Gold layers stored in **Azure Data Lake Storage (ADLS)**  
+- Used **Delta Lake** for:
+  - Versioning  
+  - Reliability  
+  - Performance optimization  
+- Created SQL-accessible tables in Databricks for:
+  - BI tools  
+  - Ad-hoc analytics  
+  - Data exploration  
 
-Key Highlights & Results:
+---
 
-Automated end-to-end data pipeline handling 10M+ retail records, improving data processing efficiency by 45%.
+## 📈 Data Visualization & BI Integration
+- Connected Gold-layer Delta tables to **Power BI**  
+- Enabled automated dataset refresh  
+- Delivered real-time retail performance dashboards for:
+  - Sales trends  
+  - Store-level performance  
+  - Product insights  
 
-Improved data quality and consistency by 30% through robust cleaning and validation frameworks.
+---
 
-Optimized query performance by 35% using Delta Lake storage and partitioned data models.
+## ⚡ Performance Optimization
+- Partitioned large datasets to reduce query scan time  
+- Leveraged Delta Lake indexing and metadata handling  
+- Tuned Spark transformations for efficient joins and aggregations  
+- Implemented incremental loading to avoid full reprocessing  
 
-Reduced manual reporting effort by 50% with automated data aggregation and dashboard refresh.
+---
 
-Enabled real-time business insights, improving executive decision-making speed by 40%.
+## 🚀 Key Results & Impact
+- Processed **10M+ retail records** with automated pipelines  
+- Improved data processing efficiency by **45%**  
+- Enhanced data quality and consistency by **30%**  
+- Optimized query performance by **35%** using Delta Lake  
+- Reduced manual reporting effort by **50%**  
+- Accelerated executive decision-making by **40%** through real-time insights  
 
-Conclusion:
-This project delivered a fully automated and scalable data engineering solution integrating raw retail data into a BI-ready analytics model. By leveraging Databricks, PySpark, and Delta Lake, the pipeline improved data accuracy, reduced latency, and enabled business teams to make faster, data-driven decisions with interactive Power BI dashboards.
+---
+
+## 📂 Repository Structure
+```
+├── notebooks/
+│   ├── bronze_ingestion.py
+│   ├── silver_transformation.py
+│   └── gold_aggregation.py
+├── sql/
+│   └── analytics_queries.sql
+├── diagrams/
+│   └── architecture.png
+├── powerbi/
+│   └── retail_dashboard.pbix
+└── README.md
+```
+
+---
+
+## 🎓 Key Learnings
+- Designed scalable data pipelines using Medallion Architecture  
+- Implemented enterprise-grade transformations using PySpark  
+- Applied Delta Lake for performance, reliability, and governance  
+- Built analytics-ready datasets aligned with real business KPIs  
+- Bridged data engineering and BI effectively  
+
+---
+
+## 🔮 Future Enhancements
+- Add streaming ingestion using Event Hubs or Kafka  
+- Implement data quality checks using expectations framework  
+- Enable CI/CD for Databricks pipelines  
+- Integrate monitoring and alerting  
+
+---
+
+## 👤 Author
+**Mahaveer Yadav**  
+📍 Gurugram, India  
+🔗 LinkedIn | GitHub  
+
+---
+
+### ⭐ Why This Project Matters
+This project demonstrates:
+- End-to-end pipeline ownership  
+- Real-world big data processing  
+- Cloud-native data engineering skills  
+- Business-focused data modeling  
+
+👉 **Exactly what hiring managers expect for 15+ LPA Data Engineer roles.**
